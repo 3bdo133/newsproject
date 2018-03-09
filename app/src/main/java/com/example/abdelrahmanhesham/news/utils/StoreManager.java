@@ -1,4 +1,4 @@
-package com.example.abdelrahmanhesham.news;
+package com.example.abdelrahmanhesham.news.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,4 +1,4 @@
-package com.example.abdelrahmanhesham.news;
+package com.example.abdelrahmanhesham.news.utils;
 
 /**
  * Created by Abdelrahman Hesham on 3/9/2018.
