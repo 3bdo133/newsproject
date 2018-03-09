@@ -1,15 +1,15 @@
-package com.example.abdelrahmanhesham.news;
+package com.example.abdelrahmanhesham.news.models;
 
 /**
  * Created by Abdelrahman Hesham on 3/8/2018.
  */
 
-public class New {
+public class NewModel {
 
     private String title;
     private String description;
 
-    public New(String title, String description) {
+    public NewModel(String title, String description) {
         this.title = title;
         this.description = description;
     }

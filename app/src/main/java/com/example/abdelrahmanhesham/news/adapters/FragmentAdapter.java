@@ -1,4 +1,4 @@
-package com.example.abdelrahmanhesham.news;
+package com.example.abdelrahmanhesham.news.adapters;
 
 /**
  * Created by Abdelrahman Hesham on 3/8/2018.
@@ -8,6 +8,9 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.example.abdelrahmanhesham.news.PoliticsFragment;
+import com.example.abdelrahmanhesham.news.TechnologyFragment;
 
 /**
  * Created by Abdelrahman Hesham on 4/22/2017.

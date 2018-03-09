@@ -10,12 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.abdelrahmanhesham.news.adapters.FragmentAdapter;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
 
+    @BindView(R.id.view_pager) ViewPager mViewPager;
+    @BindView(R.id.tab) TabLayout mTabLayout;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -27,11 +34,10 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View parentView = inflater.inflate(R.layout.fragment_home, container, false);
-        ViewPager viewPager = parentView.findViewById(R.id.view_pager);
+        ButterKnife.bind(this, parentView);
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentAdapter(getActivity().getSupportFragmentManager(),getActivity().getApplicationContext());
-        viewPager.setAdapter(fragmentPagerAdapter);
-        TabLayout tabLayout = parentView.findViewById(R.id.tab);
-        tabLayout.setupWithViewPager(viewPager);
+        mViewPager.setAdapter(fragmentPagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
         return parentView;
     }
 

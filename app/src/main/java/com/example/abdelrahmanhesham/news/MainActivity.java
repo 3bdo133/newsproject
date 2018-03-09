@@ -14,39 +14,38 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.abdelrahmanhesham.news.utils.Helper;
+
 import java.util.regex.Pattern;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button mJoinButton;
-    SharedPreferences preferences;
-    private final String EMAIL_KEY = "email";
+    @BindView(R.id.join) Button mJoinButton;
+    @BindView(R.id.email) EditText mEmailEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        ButterKnife.bind(this);
 
-        final EditText editText = findViewById(R.id.email);
-
-
-        mJoinButton = findViewById(R.id.join);
         mJoinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String email = editText.getText().toString();
+                String email = mEmailEditText.getText().toString();
 
-                if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    Toast.makeText(MainActivity.this, "Write your Email", Toast.LENGTH_LONG).show();
+                if (!Helper.validateEmail(email)) {
+                    Helper.showLongTimeToast(MainActivity.this,"Write Your Email");
                 } else {
 
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(EMAIL_KEY, email);
-                    editor.apply();
+                    StoreManager.SaveStringInPreferences(MainActivity.this,Constants.PREFERENCES_EMAIL_KEY,email);
 
-                    Log.i("Share Preferences : ",preferences.getString(EMAIL_KEY,"Error"));
+                    Helper.writeToLog(StoreManager.LoadStringFromPreferences(MainActivity.this,Constants.PREFERENCES_EMAIL_KEY,Constants.PREFERENCES_NOT_FOUND));
+
 
                     startActivity(new Intent(MainActivity.this, HomeScreenActivity.class));
 

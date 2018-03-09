@@ -3,14 +3,19 @@ package com.example.abdelrahmanhesham.news;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.abdelrahmanhesham.news.adapters.NewsAdapter;
+import com.example.abdelrahmanhesham.news.models.NewModel;
+
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -18,6 +23,8 @@ import java.util.ArrayList;
  */
 public class TechnologyFragment extends Fragment {
 
+
+    @BindView(R.id.recycler) RecyclerView mNewsRecyclerView;
 
     public TechnologyFragment() {
         // Required empty public constructor
@@ -28,21 +35,21 @@ public class TechnologyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View parentView = inflater.inflate(R.layout.fragment_technology, container, false);
-
-        ArrayList<New> news = new ArrayList<>();
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        ButterKnife.bind(this,parentView);
+        ArrayList<NewModel> news = new ArrayList<>();
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
 
 
         NewsAdapter newsAdapter = new NewsAdapter(news, new NewsAdapter.OnItemClick() {
@@ -52,10 +59,8 @@ public class TechnologyFragment extends Fragment {
             }
         });
 
-
-        RecyclerView recyclerView = parentView.findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(newsAdapter);
+        mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mNewsRecyclerView.setAdapter(newsAdapter);
 
         return parentView;
     }

@@ -9,7 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.abdelrahmanhesham.news.adapters.NewsAdapter;
+import com.example.abdelrahmanhesham.news.models.NewModel;
+
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -17,6 +23,7 @@ import java.util.ArrayList;
  */
 public class PoliticsFragment extends Fragment {
 
+    @BindView(R.id.recycler) RecyclerView mNewsRecyclerView;
 
     public PoliticsFragment() {
         // Required empty public constructor
@@ -28,20 +35,22 @@ public class PoliticsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View parentView = inflater.inflate(R.layout.fragment_politics, container, false);
 
-        ArrayList<New> news = new ArrayList<>();
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new New("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        ButterKnife.bind(this, parentView);
+
+        ArrayList<NewModel> news = new ArrayList<>();
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
 
 
         NewsAdapter newsAdapter = new NewsAdapter(news, new NewsAdapter.OnItemClick() {
@@ -52,9 +61,8 @@ public class PoliticsFragment extends Fragment {
         });
 
 
-        RecyclerView recyclerView = parentView.findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(newsAdapter);
+        mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mNewsRecyclerView.setAdapter(newsAdapter);
 
         return parentView;
     }

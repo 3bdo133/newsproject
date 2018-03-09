@@ -14,14 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:contentDescription="News"
-        android:src="@drawable/news" />
+        android:src="@drawable/img_news_logo" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:id="@+id/email"
-        android:background="@drawable/edit_text"
+        android:background="@drawable/bg_edit_text"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:padding="12dp"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:id="@+id/join"
-        android:background="@drawable/my_button"
+        android:background="@drawable/bg_button"
         android:foreground="?attr/selectableItemBackground"
         android:text="Join"
         android:textAllCaps="false"

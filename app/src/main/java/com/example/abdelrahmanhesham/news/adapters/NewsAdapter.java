@@ -1,4 +1,4 @@
-package com.example.abdelrahmanhesham.news;
+package com.example.abdelrahmanhesham.news.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,7 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.abdelrahmanhesham.news.models.NewModel;
+import com.example.abdelrahmanhesham.news.R;
+
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Abdelrahman Hesham on 3/8/2018.
@@ -14,21 +20,20 @@ import java.util.ArrayList;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
-    private ArrayList<New> news;
+    private ArrayList<NewModel> news;
     private NewsAdapter.OnItemClick onItemClick;
 
-    public NewsAdapter(ArrayList<New> news, NewsAdapter.OnItemClick onItemClick) {
+    public NewsAdapter(ArrayList<NewModel> news, NewsAdapter.OnItemClick onItemClick) {
         this.news = news;
         this.onItemClick = onItemClick;
     }
 
 
-
     @Override
     public NewsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.single_item,null);
-        NewsAdapter.ViewHolder holder=new NewsAdapter.ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.single_item, null);
+        NewsAdapter.ViewHolder holder = new NewsAdapter.ViewHolder(view);
         return holder;
     }
 
@@ -42,18 +47,20 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         return news.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        @BindView(R.id.title)
         TextView title;
+        @BindView(R.id.description)
         TextView description;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.title);
-            description = itemView.findViewById(R.id.description);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
-        public void bind(int position){
+
+        public void bind(int position) {
             title.setText(news.get(position).getTitle());
             description.setText(news.get(position).getDescription());
         }
