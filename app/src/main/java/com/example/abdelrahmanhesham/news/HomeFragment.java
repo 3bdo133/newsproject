@@ -39,6 +39,7 @@ public class HomeFragment extends Fragment {
         mViewPager.setAdapter(fragmentPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         return parentView;
+
     }
 
 }

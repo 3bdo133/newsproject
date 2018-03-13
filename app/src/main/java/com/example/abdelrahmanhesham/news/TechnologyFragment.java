@@ -111,6 +111,5 @@ public class TechnologyFragment extends Fragment {
         if (mQueue != null) {
             mQueue.cancelAll(TAG);
         }
-
     }
 }

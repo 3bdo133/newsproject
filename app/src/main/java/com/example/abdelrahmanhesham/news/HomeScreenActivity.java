@@ -15,9 +15,12 @@ import butterknife.ButterKnife;
 
 public class HomeScreenActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.drawer_layout) DrawerLayout mDrawer;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.nav_view) NavigationView mNavigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawer;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.nav_view)
+    NavigationView mNavigationView;
     ActionBarDrawerToggle mToggle;
 
     @Override
@@ -40,8 +43,12 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationV
         mNavigationView.setCheckedItem(R.id.nav_home);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.main,new HomeFragment()).commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main, new HomeFragment()).commit();
+        }
     }
+
+
 
     @Override
     public void onBackPressed() {
