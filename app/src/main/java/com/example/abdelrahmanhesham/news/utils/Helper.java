@@ -1,10 +1,14 @@
 package com.example.abdelrahmanhesham.news.utils;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
+
+import java.net.URI;
+import java.net.URL;
 
 /**
  * Created by Abdelrahman Hesham on 3/9/2018.
@@ -34,5 +38,7 @@ public class Helper {
         }
 
     }
+
+
 
 }

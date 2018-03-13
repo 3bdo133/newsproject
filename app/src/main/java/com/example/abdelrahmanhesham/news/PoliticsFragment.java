@@ -8,9 +8,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.abdelrahmanhesham.news.adapters.NewsAdapter;
 import com.example.abdelrahmanhesham.news.models.NewModel;
+import com.example.abdelrahmanhesham.news.utils.Connector;
+import com.example.abdelrahmanhesham.news.utils.Helper;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -24,6 +35,14 @@ import butterknife.ButterKnife;
 public class PoliticsFragment extends Fragment {
 
     @BindView(R.id.recycler) RecyclerView mNewsRecyclerView;
+    @BindView(R.id.progress_indicator)
+    ProgressBar mProgressBar;
+    RequestQueue mQueue;
+    String mNewsUrl;
+    StringRequest mStringRequest;
+    ArrayList<NewModel> mNews;
+    NewsAdapter mNewsAdapter;
+    public static final String TAG = "MyTag";
 
     public PoliticsFragment() {
         // Required empty public constructor
@@ -37,23 +56,14 @@ public class PoliticsFragment extends Fragment {
 
         ButterKnife.bind(this, parentView);
 
-        ArrayList<NewModel> news = new ArrayList<>();
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
-        news.add(new NewModel("Test","TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest"));
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        mQueue = Volley.newRequestQueue(getActivity());
+        mNewsUrl = Connector.createPoliticsUrl();
+        mNews = new ArrayList<>();
 
 
-        NewsAdapter newsAdapter = new NewsAdapter(news, new NewsAdapter.OnItemClick() {
+        mNewsAdapter = new NewsAdapter(mNews, new NewsAdapter.OnItemClick() {
             @Override
             public void setOnItemClick(int position) {
 
@@ -61,10 +71,45 @@ public class PoliticsFragment extends Fragment {
         });
 
 
+        mStringRequest = new StringRequest(Request.Method.GET, mNewsUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        mProgressBar.setVisibility(View.INVISIBLE);
+                        Helper.writeToLog(response);
+                        try {
+                            mNews.addAll(Connector.createFromJson(response));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        mNewsAdapter.notifyDataSetChanged();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Helper.writeToLog(error.toString());
+
+            }
+        });
+
+        mStringRequest.setTag(TAG);
+        mQueue.add(mStringRequest);
+
         mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        mNewsRecyclerView.setAdapter(newsAdapter);
+        mNewsRecyclerView.setAdapter(mNewsAdapter);
 
         return parentView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mQueue != null) {
+            mQueue.cancelAll(TAG);
+        }
+
     }
 
 }

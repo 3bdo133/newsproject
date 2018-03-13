@@ -61,8 +61,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         }
 
         public void bind(int position) {
-            title.setText(news.get(position).getTitle());
-            description.setText(news.get(position).getDescription());
+            title.setText(news.get(position).getTitle().equals("null") ? "": news.get(position).getTitle());
+            description.setText(news.get(position).getDescription().equals("null") ? "":news.get(position).getDescription());
         }
 
         @Override
