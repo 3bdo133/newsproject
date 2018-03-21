@@ -1,6 +1,7 @@
 package com.example.abdelrahmanhesham.news.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +62,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         }
 
         public void bind(int position) {
-            title.setText(news.get(position).getTitle().equals("null") ? "": news.get(position).getTitle());
-            description.setText(news.get(position).getDescription().equals("null") ? "":news.get(position).getDescription());
+            title.setText(Html.fromHtml(news.get(position).getTitle().equals("null") ? "": news.get(position).getTitle()));
+            description.setText(Html.fromHtml(news.get(position).getDescription().equals("null") ? "":news.get(position).getDescription()));
         }
 
         @Override

@@ -32,17 +32,17 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PoliticsFragment extends Fragment {
+public class PoliticsFragment extends Fragment implements Connector.LoadCallback,Connector.ErrorCallback {
 
-    @BindView(R.id.recycler) RecyclerView mNewsRecyclerView;
+    @BindView(R.id.recycler)
+    RecyclerView mNewsRecyclerView;
     @BindView(R.id.progress_indicator)
     ProgressBar mProgressBar;
-    RequestQueue mQueue;
+    Connector mConnector;
     String mNewsUrl;
-    StringRequest mStringRequest;
     ArrayList<NewModel> mNews;
     NewsAdapter mNewsAdapter;
-    public static final String TAG = "MyTag";
+    public static final String TAG = PoliticsFragment.class.getSimpleName();
 
     public PoliticsFragment() {
         // Required empty public constructor
@@ -58,7 +58,6 @@ public class PoliticsFragment extends Fragment {
 
         mProgressBar.setVisibility(View.VISIBLE);
 
-        mQueue = Volley.newRequestQueue(getActivity());
         mNewsUrl = Connector.createPoliticsUrl();
         mNews = new ArrayList<>();
 
@@ -71,31 +70,9 @@ public class PoliticsFragment extends Fragment {
         });
 
 
-        mStringRequest = new StringRequest(Request.Method.GET, mNewsUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+        mConnector = new Connector(getActivity(),this,this);
 
-                        mProgressBar.setVisibility(View.INVISIBLE);
-                        Helper.writeToLog(response);
-                        try {
-                            mNews.addAll(Connector.createFromJson(response));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        mNewsAdapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Helper.writeToLog(error.toString());
-
-            }
-        });
-
-        mStringRequest.setTag(TAG);
-        mQueue.add(mStringRequest);
+        mConnector.getRequest(TAG,mNewsUrl);
 
         mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mNewsRecyclerView.setAdapter(mNewsAdapter);
@@ -106,10 +83,18 @@ public class PoliticsFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (mQueue != null) {
-            mQueue.cancelAll(TAG);
-        }
-
+        mConnector.cancelAllRequests(TAG);
     }
 
+    @Override
+    public void onComplete(String tag, String response) {
+        mNews.addAll(Connector.createFromJson(response));
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mNewsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onError(String error) {
+        Helper.writeToLog(error);
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.abdelrahmanhesham.news;
 
 
+import android.graphics.ColorSpace;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,19 +33,18 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TechnologyFragment extends Fragment {
+public class TechnologyFragment extends Fragment implements Connector.ErrorCallback,Connector.LoadCallback {
 
 
     @BindView(R.id.recycler)
     RecyclerView mNewsRecyclerView;
     @BindView(R.id.progress_indicator)
     ProgressBar mProgressBar;
-    RequestQueue mQueue;
+    Connector mConnector;
     String mNewsUrl;
-    StringRequest mStringRequest;
     ArrayList<NewModel> mNews;
     NewsAdapter mNewsAdapter;
-    public static final String TAG = "MyTag";
+    public static final String TAG = TechnologyFragment.class.getSimpleName();
 
     public TechnologyFragment() {
         // Required empty public constructor
@@ -59,7 +59,6 @@ public class TechnologyFragment extends Fragment {
 
         mProgressBar.setVisibility(View.VISIBLE);
 
-        mQueue = Volley.newRequestQueue(getActivity());
         mNewsUrl = Connector.createTechnologyUrl();
         mNews = new ArrayList<>();
 
@@ -70,33 +69,9 @@ public class TechnologyFragment extends Fragment {
             }
         });
 
+        mConnector = new Connector(getActivity(),this,this);
 
-        mStringRequest = new StringRequest(Request.Method.GET, mNewsUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        mProgressBar.setVisibility(View.INVISIBLE);
-                        Helper.writeToLog(response);
-                        try {
-                            mNews.addAll(Connector.createFromJson(response));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        mNewsAdapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Helper.writeToLog(error.toString());
-
-            }
-        });
-
-        mStringRequest.setTag(TAG);
-        mQueue.add(mStringRequest);
-
+        mConnector.getRequest(TAG, mNewsUrl);
 
         mNewsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mNewsRecyclerView.setAdapter(mNewsAdapter);
@@ -108,8 +83,18 @@ public class TechnologyFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (mQueue != null) {
-            mQueue.cancelAll(TAG);
-        }
+        mConnector.cancelAllRequests(TAG);
+    }
+
+    @Override
+    public void onComplete(String tag, String response) {
+        mNews.addAll(Connector.createFromJson(response));
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mNewsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onError(String error) {
+        Helper.writeToLog(error);
     }
 }
